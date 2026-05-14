@@ -1,0 +1,38 @@
+/**
+ * @file main.c
+ *
+ * @brief Main file for the supervisor project
+ */
+#include "event_handler/event_handler.h"
+#include "event_handler/events.h"
+#include <stdio.h>
+
+void default_action(const Event *event) {
+  SUP_DEBUG_PRINT("Action for %s event '%s'\n",
+                  event->kind == CONTROLLABLE ? "CONTROLLABLE"
+                                              : "UNCONTROLLABLE",
+                  event->name);
+}
+
+void setup(void) {
+  printf("Start supervisor!\n\n");
+  // set action on controllable events for example
+  set_event_action(&a, default_action);
+  set_event_action(&c, default_action);
+
+  // start the controller
+  controller_start();
+  
+  // trigger uncontrolable event for test
+  trigger_event(&b);
+  trigger_event(&d);
+
+}
+
+int main(void) {
+  setup();
+  // while (1) {
+  //   loop
+  // }
+  return 0;
+}
